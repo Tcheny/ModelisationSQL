@@ -1,12 +1,12 @@
 ## Les requêtes SQL:
 
-* Afficher toutes la liste
+* Afficher toutes les lists
 
 ```
 SELECT * FROM lists
 ```
 
-* Afficher le nom de la liste dans laquelle se trouve la carte 3
+* Afficher le nom de la list dans laquelle se trouve la card 3
 
 *Solution 1 avec sous requête*
 ```
@@ -85,7 +85,7 @@ SELECT card_id as ‘id de la card', firstname, lastname
     WHERE card_id=2
 ```
 
-* Afficher les listes avec leurs cards associées
+* Afficher les lists avec leurs cards associées
 
 *Solution 1 sans alias*
 ```
