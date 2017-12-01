@@ -10,17 +10,17 @@ SELECT * FROM lists
 
 *Solution 1 avec sous requête*
 ```
-SELECT name 
-    FROM lists 
-    WHERE id = (SELECT list_id 
-    FROM cards 
+SELECT name
+    FROM lists
+    WHERE id = (SELECT list_id
+    FROM cards
     WHERE cards.id = 3)
 ```
 
 *Solution 2 sans alias*
 ```
 SELECT lists.name
-    FROM cards 
+    FROM cards
     JOIN lists ON lists.id = cards.list_id
     WHERE cards.id = 3
 ```
@@ -43,8 +43,8 @@ SELECT * FROM lists
 
 *Solution 2*
 ```
-SELECT * 
-    FROM cards 
+SELECT *
+    FROM cards
     WHERE list_id=3
 ```
 
@@ -52,7 +52,7 @@ SELECT *
 
 *Solution 1*
 ```
-SELECT name 
+SELECT name
     FROM users_cards
     JOIN cards ON cards.id = card_id
     WHERE user_id = 1
@@ -60,7 +60,7 @@ SELECT name
 
 *Solution 2*
 ```
-SELECT name, firstname, lastname, user_id 
+SELECT name, firstname, lastname, user_id
     FROM users_cards
     JOIN cards ON cards.id = card_id
     JOIN users on users.id = user_id
@@ -71,7 +71,7 @@ SELECT name, firstname, lastname, user_id
 
 *Solution 1*
 ```
-SELECT card_id, firstname, lastname 
+SELECT card_id, firstname, lastname
     FROM users_cards
     JOIN users ON users.id = user_id
     WHERE card_id=2
@@ -79,7 +79,7 @@ SELECT card_id, firstname, lastname
 
 *Solution 2*
 ```
-SELECT card_id as ‘id de la card', firstname, lastname 
+SELECT card_id as ‘id de la card', firstname, lastname
     FROM users_cards
     JOIN users ON users.id = user_id
     WHERE card_id=2
@@ -89,22 +89,22 @@ SELECT card_id as ‘id de la card', firstname, lastname
 
 *Solution 1 sans alias*
 ```
-SELECT lists.name, cards.name 
+SELECT lists.name, cards.name
     FROM lists
     JOIN cards ON lists.id = list_id
 ```
 
 *Solution 1 avec alias*
 ```
-SELECT l.name, c.name 
+SELECT l.name, c.name
     FROM  lists as l
     JOIN cards as c ON c.list_id = l.id
 ```
 
 *Solution 2 avec alias*
 ```
-SELECT l.name, GROUP_CONCAT(c.name) 
-    as cards 
+SELECT l.name, GROUP_CONCAT(c.name)
+    as cards
     FROM  lists as l
     JOIN cards as c ON c.list_id = l.id
     GROUP BY l.id
@@ -112,9 +112,9 @@ SELECT l.name, GROUP_CONCAT(c.name)
 
 *Solution 3*
 ```
-SELECT l.name, CONCAT('["', 
-    GROUP_CONCAT(c.name SEPARATOR '","'),'"]') 
-    as cards 
+SELECT l.name, CONCAT('["',
+    GROUP_CONCAT(c.name SEPARATOR '","'),'"]')
+    as cards
     FROM  lists as l
     JOIN cards as c ON c.list_id = l.id
     GROUP BY l.id
@@ -124,22 +124,22 @@ SELECT l.name, CONCAT('["',
 
 *Petit bout de la solution*
 ```
-SELECT uc.card_id as cid, 
-  CONCAT( '["', GROUP_CONCAT(CONCAT(u.lastname,' ', u.firstname) 
-  SEPARATOR '","'), '"]')
-  as users
-  FROM users_cards as uc
-  JOIN users as u ON u.id = uc.user_id
-  GROUP BY uc.card_id
+SELECT uc.card_id as cid,
+    CONCAT( '["', GROUP_CONCAT(CONCAT(u.lastname,' ', u.firstname)
+    SEPARATOR '","'), '"]')
+    as users
+    FROM users_cards as uc
+    JOIN users as u ON u.id = uc.user_id
+    GROUP BY uc.card_id
 ```
 
 *Solution*
 ```
-SELECT l.name, 
-CONCAT('[', 
+SELECT l.name,
+CONCAT('[',
     GROUP_CONCAT(
     CONCAT('{"name":"',c.name, '", users:',ucr.users,'}')
-    ),']') as cards 
+    ),']') as cards
     FROM (
     SELECT uc.card_id as cid,
     CONCAT('["', GROUP_CONCAT(CONCAT(u.lastname,' ', u.firstname)
